@@ -18,8 +18,12 @@ defmodule Practice do
 
   def factor(x) do
     # Maybe delegate this too.
-    [1,2,x]
+    Practice.Factorization.primeFactor(x)
   end
 
   # TODO: Add a palindrome? function.
+  def palindrome(x) do
+    rev = String.reverse(String.downcase(x))
+    rev == x
+  end
 end

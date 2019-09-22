@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="column">
+    <p><%= link "← go back", to: "/" %></p>
+    <h2>Prime Factorization</h2>
+    <!-- Display of the result was borrowed from https://github.com/hemanthnhs/CS5610-WebDev-HW3/blob/master/lib/practice_web/templates/page/factor.html.eex-->
+    <p><%= if @y==[] do %><%= @x %> Cannot be factorized since there exists no prime factors for this number <% else %><%= @x %> prime factors are <%= Enum.join(@y,", ") %><% end %>
+    </p>
+  </div>
+</div>
