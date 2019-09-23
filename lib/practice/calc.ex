@@ -18,18 +18,21 @@ defmodule Practice.Calc do
     # |> convert to postfix
     # |> reverse to prefix
     # |> evaluate as a stack calculator using pattern matching
-    initial = -1
     acc = 0
     operatorStack =[]
     digitStack =[]
-    expr
-    |> String.split(~r/\s+/)
+    sps = String.split(expr, ~r/\s+/)
+    if Enum.count(sps) == 1 do
+     [x] = sps
+     x = parse_float(x)
+     x
+    else
+    sps
     |> accumulator(operatorStack,digitStack);
-
+end
 end
 
 def compute(operand1,operand2,itemPopped) do
-value = 0
 case itemPopped do
     "+" -> operand1 + operand2
     "-" -> operand1 - operand2
@@ -39,16 +42,17 @@ end
 end
 
   def assignPrecedenceToOperators(operator) do
-  precedence = 0
     case operator do
         "+" -> 1
         "-" -> 1
         "*" -> 2
         "/" -> 2
-        _  -> precedence = 0
+        _  -> 0
     end
   end
-# https://blog.codeship.com/statefulness-in-elixir/
+
+# For appending into stack and removing item from stack referred https://blog.codeship.com/statefulness-in-elixir/
+
   def size(stack) do
     Enum.count(stack)
   end
@@ -63,18 +67,10 @@ end
   end
 
 def accumulator(splits, operatorStack, digitStack)  do
-IO.inspect(splits)
-IO.inspect(digitStack)
-IO.puts(Enum.count(splits))
-IO.inspect(splits)
-  IO.puts("sssssssssssssssssgggggbbb")
-if Enum.count(splits) > 0 do
-[s | tail] = splits
-IO.puts(s)
-IO.inspect(s)
-  IO.puts("sssssssssssssssssggggg")
+    if Enum.count(splits) > 0 do
+    [s | tail] = splits
+
     if s in ["*","/","+","-"] do
-      #Precedence = assignPrecedenceToOperators(s)
       size = size(operatorStack)
 
       if size == 0 do
@@ -88,14 +84,9 @@ IO.inspect(s)
         if assignPrecedenceToOperators(s) > assignPrecedenceToOperators(itemPopped) do
           operatorStack  = push(operatorStack, itemPopped)
           operatorStack  = push(operatorStack, s)
-          IO.puts(digitStack)
-          IO.puts("xxxxxxxxxxxxxxxxx")
-          IO.inspect(operatorStack)
           accumulator(tail,operatorStack,digitStack)
 
         else
-
-          #{itemPopped, operatorStack} = pop(operatorStack)
           {operand2, digitStack} = pop(digitStack)
           {operand1, digitStack} = pop(digitStack)
           acc = compute(operand1,operand2,itemPopped)
@@ -115,10 +106,6 @@ else
     {operand2, digitStack} = pop(digitStack)
     {operand1, digitStack} = pop(digitStack)
     acc = compute(operand1,operand2,itemPopped)
-    IO.puts("aaacccccccccccccccccccccccccccccccccccccccccc")
-    IO.puts(acc)
-    IO.inspect(itemPopped)
-    IO.inspect(operatorStack)
     digitStack = push(digitStack,acc)
     if size(operatorStack) != 0 do
       accumulator([],operatorStack,digitStack)

@@ -23,7 +23,8 @@ defmodule Practice do
 
   # TODO: Add a palindrome? function.
   def palindrome(x) do
-    rev = String.reverse(String.downcase(x))
+    x = String.downcase(x)
+    rev = String.reverse(x)
     rev == x
   end
 end
